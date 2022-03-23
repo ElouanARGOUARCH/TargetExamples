@@ -59,7 +59,7 @@ class ConditionalDensityEstimationTarget:
                 theta)]]) for theta in thetas], dim =0)
 
 
-    def get_target(self):
+    def get_simulator(self):
         return self.X_samples, self.T_samples, self.T_prior, self.simulator
 
     def target_visual(self, num_samples=5000):

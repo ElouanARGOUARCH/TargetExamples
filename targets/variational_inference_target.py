@@ -103,8 +103,8 @@ class VariationalInferenceTarget:
             mix_target = MixtureSameFamily(cat, mvn_target)
             self.target_log_density = lambda samples: mix_target.log_prob(samples.cpu()).to(samples.device)
 
-    def get_target(self):
-        return self.p, self.target_log_density
+    def get_log_density(self):
+        return self.target_log_density, self.p
 
     def target_visual(self):
         return()
