@@ -6,9 +6,9 @@ setup(
     packages=['targets'],
     url='',
     license='',
-    author='EA264728',
+    author='Elouan ARGOUARCH',
     setup_requires = ['wheel'],
-    install_requires = ['seaborn', 'torch', 'matplotlib', 'sklearn'],
+    install_requires = ['torch', 'matplotlib', 'sklearn'],
     author_email='elouan.argouarch@gmail.com',
     description=''
 )
