@@ -48,7 +48,7 @@ class Mixture:
 
 
 class VariationalInferenceTarget:
-    def __init__(self, choice, num_samples):
+    def __init__(self, choice):
         self.choices = ["Sharp Edges", "Dimension 1", "Blob Dimension 64", "Orbits"]
         self.choice = choice
         assert self.choice in self.choices, "'" + choice + "'" + ' not implemented, please select from ' + str(
@@ -61,7 +61,6 @@ class VariationalInferenceTarget:
             uniform2 = Uniform(torch.tensor([-5.0]), torch.tensor([5.0]))
             target = Mixture([uniform,uniform2, temp], torch.tensor([1.,1., 1.]))
             self.target_log_density = lambda samples: target.log_prob(samples.cpu()).to(samples.devices)
-            self.target_samples = target.sample([num_samples])
 
         if choice == "Dimension 1":
             self.p = 1
