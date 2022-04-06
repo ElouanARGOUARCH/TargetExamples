@@ -21,7 +21,7 @@ class DensityEstimationTarget(nn.Module):
 
         if samples.shape[-1] >= 2:
             plt.figure(figsize=(10, 5))
-            plt.scatter(samples[:,1], samples[:,2],color='red',alpha=0.6)
+            plt.scatter(samples[:,-1], samples[:,-2],color='red',alpha=0.6)
             plt.legend()
 
 class TwoCircles(DensityEstimationTarget):
