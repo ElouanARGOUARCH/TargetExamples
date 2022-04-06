@@ -52,7 +52,7 @@ class SCurve(DensityEstimationTarget):
         return torch.tensor(X).float()
 
 class Dimension1(DensityEstimationTarget):
-    def __int__(self):
+    def __init__(self):
         num_component = 6
         means = torch.tensor([[-0.25], [1.875], [4.125], [6.25], [-5.5], [-8.5]])
         covs = torch.tensor([[[1.]], [[.5]], [[.5]], [[2.]], [[1]], [[1]]])
