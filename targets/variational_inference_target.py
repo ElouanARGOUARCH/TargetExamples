@@ -51,10 +51,13 @@ class Dimension1(VariationalInferenceTarget):
     def __init__(self):
         super().__init__()
         self.p = 1
-        temp = torch.distributions.laplace.Laplace(torch.tensor([0.]),torch.tensor([2]))
-        uniform = Uniform(torch.tensor([-3]), torch.tensor([3]))
-        uniform2 = Uniform(torch.tensor([-5.0]), torch.tensor([5.0]))
-        self.mvn = Mixture([uniform,uniform2, temp], torch.tensor([1.,1., 1.]))
+        num_component = 6
+        means = torch.tensor([[-0.25], [1.875], [4.125], [6.25], [-5.5], [-8.5]])
+        covs = torch.tensor([[[1.]], [[.5]], [[.5]], [[2.]], [[1]], [[1]]])
+        comp = torch.ones(num_component)
+        mvn_target = MultivariateNormal(means, covs)
+        cat = Categorical(comp / torch.sum(comp))
+        self.mix_target = MixtureSameFamily(cat, mvn_target)
 
     def log_prob(self, samples):
         return self.mvn.log_prob(samples.cpu()).to(samples.devices)
