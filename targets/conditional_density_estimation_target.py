@@ -62,14 +62,14 @@ class ConditionalDensityEstimationTarget:
     def get_simulator(self):
         return self.X_samples, self.T_samples, self.T_prior, self.simulator
 
-    def target_visual(self, num_samples=5000):
+    def target_visual(self):
         if self.choice == "Deformed Two circles":
             fig = plt.figure(figsize=(10, 10))
             for i in range(2):
                 for j in range(2):
                     theta = torch.tensor([[.75 + i * 1.25, .75 + j * 1.25]])
-                    T = theta.repeat(num_samples, 1)
-                    X, y = datasets.make_circles(num_samples, factor=0.5, noise=0.025)
+                    T = theta.repeat(self.X_samples.shape[0], 1)
+                    X, y = datasets.make_circles(self.X_samples.shape[0], factor=0.5, noise=0.025)
                     X = torch.tensor(StandardScaler().fit_transform(X)).float() * T
                     ax = fig.add_subplot(2, 2, i + 2 * j + 1)
                     ax.set_xlim(-5, 5)
@@ -93,8 +93,8 @@ class ConditionalDensityEstimationTarget:
                 rotation_matrix = torch.zeros(1, 2, 2)
                 rotation_matrix[0, 0, 0], rotation_matrix[0, 0, 1], rotation_matrix[0, 1, 0], rotation_matrix[
                     0, 1, 1] = torch.cos(T), torch.sin(T), -torch.sin(T), torch.cos(T)
-                rotation_matrix = rotation_matrix.repeat(num_samples, 1, 1)
-                X, y = datasets.make_moons(num_samples, noise=0.05)
+                rotation_matrix = rotation_matrix.repeat(self.X_samples.shape[0], 1, 1)
+                X, y = datasets.make_moons(self.X_samples.shape[0], noise=0.05)
                 X = (torch.tensor(X).float().unsqueeze(-2) @ rotation_matrix).squeeze(-2)
                 ax.set_xlim(-2.5, 2.5)
                 ax.set_ylim(-2.5, 2.5)
@@ -109,7 +109,7 @@ class ConditionalDensityEstimationTarget:
         if self.choice == 'Gaussian Field':
             fig = plt.figure(figsize=(8, 5))
             ax = fig.add_subplot()
-            ax.scatter(self.T_samples[:num_samples], self.X_samples[:num_samples], color='red', alpha=.4,
+            ax.scatter(self.T_samples, self.X_samples, color='red', alpha=.4,
                        label='(x|theta) samples')
             ax.set_xlabel('theta')
             ax.set_ylabel('x')
