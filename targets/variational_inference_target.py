@@ -60,7 +60,7 @@ class Dimension1(VariationalInferenceTarget):
         self.mix_target = MixtureSameFamily(cat, mvn_target)
 
     def log_prob(self, samples):
-        return self.mix_target.log_prob(samples.cpu()).to(samples.devices)
+        return self.mix_target.log_prob(samples.cpu()).to(samples.device)
 
 class BlobDimension64(VariationalInferenceTarget):
     def __init__(self):
