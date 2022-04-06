@@ -1,3 +1,3 @@
-from .density_estimation_target import DensityEstimationTarget
-from .variational_inference_target import VariationalInferenceTarget
-from .conditional_density_estimation_target import ConditionalDensityEstimationTarget
+from .density_estimation_target import *
+from .variational_inference_target import *
+from .conditional_density_estimation_target import *
