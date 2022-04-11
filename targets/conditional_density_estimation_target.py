@@ -5,7 +5,7 @@ from torch import nn
 from sklearn import datasets
 from sklearn.preprocessing import StandardScaler
 from torch.distributions import Normal
-from misc import Uniform
+from .misc import Uniform
 import math
 
 
