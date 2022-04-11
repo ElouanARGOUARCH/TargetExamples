@@ -146,7 +146,7 @@ class MoonsRotation(ConditionalDensityEstimationTarget):
         return self.prior.log_prob(theta)
 
     def sample_prior(self, num_samples):
-        return self.prior.sample(num_samples)
+        return self.prior.sample([num_samples])
 
     def simulate(self, thetas):
         num_samples = min(thetas.shape[0], 100)
