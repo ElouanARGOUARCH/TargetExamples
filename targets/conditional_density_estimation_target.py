@@ -31,7 +31,7 @@ class ConditionalDensityEstimationTarget(nn.Module):
         raise NotImplementedError
 
 class Wave(ConditionalDensityEstimationTarget):
-    def __int__(self):
+    def __init__(self):
         super().__init__()
         self.p = 1
         self.d = 1
@@ -128,7 +128,7 @@ class DeformedCircles(ConditionalDensityEstimationTarget):
                 ax.set_xlim(-5, 5)
                 ax.set_ylim(-5, 5)
                 ax.scatter(X[:, 0], X[:, 1], color='red', alpha=.3,
-                           label=self.choice + ': theta = [' + str(np.round(theta[0, 0].item(), 3)) + ',' + str(
+                           label='theta = [' + str(np.round(theta[0, 0].item(), 3)) + ',' + str(
                                np.round(theta[0, 1].item(), 3)) + ']')
                 ax.scatter([0], [0], color='black')
                 ax.arrow(0., 0., theta[0, 0], 0., color='black', head_width=0.2, head_length=0.2)
@@ -172,7 +172,7 @@ class MoonsRotation(ConditionalDensityEstimationTarget):
             ax.set_xlim(-2.5, 2.5)
             ax.set_ylim(-2.5, 2.5)
             ax.scatter(X[:, 0], X[:, 1], color='red', alpha=.3,
-                       label=self.choice + ' samples : theta = ' + str(np.round(theta.item(), 3)))
+                       label='theta = ' + str(np.round(theta.item(), 3)))
             ax.scatter([0], [0], color='black')
             ax.axline([0, 0], [torch.cos(theta), torch.sin(theta)], color='black', linestyle='--',
                       label='Axis Rotation with angle theta')
