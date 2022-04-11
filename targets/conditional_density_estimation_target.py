@@ -63,7 +63,7 @@ class Wave(ConditionalDensityEstimationTarget):
         ax.legend()
 
 class GaussianField(ConditionalDensityEstimationTarget):
-    def __int__(self):
+    def __init__(self):
         super().__init__()
         self.p = 1
         self.d = 1
