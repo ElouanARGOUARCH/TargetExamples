@@ -3,8 +3,6 @@ from torch import nn
 from torch.distributions import MultivariateNormal, Categorical, MixtureSameFamily, Uniform
 import math
 
-
-
 class VariationalInferenceTarget(nn.Module):
     def __init__(self):
         super().__init__()
@@ -80,3 +78,21 @@ class BlobDimension64(VariationalInferenceTarget):
 
     def log_prob(self, samples):
         return self.mvn.log_prob(samples.cpu()).to(samples.device)
+
+class Funnel(VariationalInferenceTarget):
+
+    def __init__(self, args):
+        super().__init__()
+        self.a = torch.tensor(1.)
+        self.b = torch.tensor(0.5)
+        self.dim = 20
+
+        self.distrib_x1 = MultivariateNormal(torch.zeros(1), torch.tensor(self.a))
+
+    def log_prob(self, x):
+        log_probx1 = self.distrib_x1.log_prob(x[..., 0].unsqueeze(1))
+        logprob_rem = (- x[..., 1:] ** 2 * (-2 * self.b * x[..., 0].unsqueeze(-1)).exp() - \
+                       2 * self.b * x[:, 0].unsqueeze(-1) - torch.tensor(2 * math.pi).log()) / 2
+        logprob_rem = logprob_rem.sum(-1)
+        return (log_probx1 + logprob_rem.unsqueeze(-1)).flatten()
+

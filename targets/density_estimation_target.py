@@ -97,3 +97,18 @@ class Banana(DensityEstimationTarget):
     def sample(self, num_samples):
         return self.transform(self.mvn.sample([num_samples]))
 
+class Funnel(DensityEstimationTarget):
+
+    def __init__(self):
+        super().__init__()
+        self.a = torch.tensor(1.)
+        self.b = torch.tensor(0.5)
+        self.dim = 20
+
+        self.distrib_x1 = MultivariateNormal(torch.zeros(1), torch.tensor(self.a))
+
+    def sample(self, n_samples):
+        x1 = self.distrib_x1.sample([n_samples])
+        rem = torch.randn([n_samples, self.dim - 1]) * (self.b * x1).exp()
+        return torch.cat([x1, rem], -1)
+
