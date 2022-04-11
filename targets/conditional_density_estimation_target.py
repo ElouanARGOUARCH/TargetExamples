@@ -166,7 +166,7 @@ class MoonsRotation(ConditionalDensityEstimationTarget):
             rotation_matrix = torch.zeros(1, 2, 2)
             rotation_matrix[0, 0, 0], rotation_matrix[0, 0, 1], rotation_matrix[0, 1, 0], rotation_matrix[
                 0, 1, 1] = torch.cos(T), torch.sin(T), -torch.sin(T), torch.cos(T)
-            rotation_matrix = rotation_matrix.repeat(self.X_samples.shape[0], 1, 1)
+            rotation_matrix = rotation_matrix.repeat(5000, 1, 1)
             X, y = datasets.make_moons(5000, noise=0.05)
             X = (torch.tensor(X).float().unsqueeze(-2) @ rotation_matrix).squeeze(-2)
             ax.set_xlim(-2.5, 2.5)
