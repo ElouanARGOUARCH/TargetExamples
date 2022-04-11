@@ -35,7 +35,7 @@ class Wave(ConditionalDensityEstimationTarget):
         super().__init__()
         self.p = 1
         self.d = 1
-        self.prior = torch.distributions.MultivariateNormal(torch.tensor([0.]),torch.tensor([[3.]]))
+        self.prior = Uniform(torch.tensor([-8.]),torch.tensor([8.]))
 
     def sample_prior(self, num_samples):
         return self.prior.sample([num_samples])
@@ -50,7 +50,7 @@ class Wave(ConditionalDensityEstimationTarget):
         return torch.square(.5 * (1.2 - 1 / (1 + 0.1 * theta ** 2)))
 
     def simulate(self, thetas):
-        return torch.cat([Normal(self.mu(theta), self.sigma2(theta)).sample() for theta in thetas], dim=0)
+        return torch.cat([Normal(self.mu(theta), self.sigma2(theta)).sample().unsqueeze(-1) for theta in thetas], dim=0)
 
     def target_visual(self):
         theta_samples, x_samples = self.make_dataset(5000)
@@ -83,10 +83,10 @@ class GaussianField(ConditionalDensityEstimationTarget):
 
     def sigma2(self,theta):
         PI = torch.acos(torch.zeros(1)).item() * 2
-        return (torch.tensor(0.1) + torch.exp(.5 * (theta - PI)))
+        return torch.tensor(0.1) + torch.exp(.5 * (theta - PI))
 
     def simulate(self, thetas):
-        return torch.cat([Normal(self.mu(theta), self.sigma2(theta)).sample() for theta in thetas], dim=0)
+        return torch.cat([Normal(self.mu(theta), self.sigma2(theta)).sample().unsqueeze(-1) for theta in thetas], dim=0)
 
     def target_visual(self):
         theta_samples, x_samples = self.make_dataset(5000)
@@ -140,7 +140,7 @@ class DeformedCircles(ConditionalDensityEstimationTarget):
 class MoonsRotation(ConditionalDensityEstimationTarget):
     def __init__(self):
         super().__init__()
-        self.prior = Uniform(0, 3.14159265)
+        self.prior = Uniform(torch.tensor([0.]), torch.tensor([3.14159265]))
 
     def prior_log_prob(self, theta):
         return self.prior.log_prob(theta)
