@@ -101,11 +101,11 @@ class Funnel(DensityEstimationTarget):
 
     def __init__(self):
         super().__init__()
-        self.a = torch.tensor(1.)
+        self.a = 1.
         self.b = torch.tensor(0.5)
         self.dim = 20
 
-        self.distrib_x1 = MultivariateNormal(torch.zeros(1), torch.tensor(self.a))
+        self.distrib_x1 = MultivariateNormal(torch.zeros(1), a*torch.eye(self.dim))
 
     def sample(self, n_samples):
         x1 = self.distrib_x1.sample([n_samples])
