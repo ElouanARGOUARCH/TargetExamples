@@ -81,7 +81,7 @@ class BlobDimension64(VariationalInferenceTarget):
 
 class Funnel(VariationalInferenceTarget):
 
-    def __init__(self, args):
+    def __init__(self):
         super().__init__()
         self.a = torch.tensor(1.)
         self.b = torch.tensor(0.5)
