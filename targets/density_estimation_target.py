@@ -1,5 +1,5 @@
 import torch
-from torch.distributions import MultivariateNormal, Categorical, MixtureSameFamily
+from torch.distributions import Normal,MultivariateNormal, Categorical, MixtureSameFamily
 from torch import nn
 from sklearn import datasets
 from sklearn.preprocessing import StandardScaler
@@ -99,16 +99,18 @@ class Banana(DensityEstimationTarget):
 
 class Funnel(DensityEstimationTarget):
 
-    def __init__(self):
-        super().__init__()
-        self.a = torch.tensor(1.)
-        self.b = torch.tensor(0.5)
-        self.dim = 20
+        def __init__(self):
+            super().__init__()
+            self.a = torch.tensor(1.)
+            self.b = torch.tensor(0.5)
+            self.dim = 20
 
-        self.distrib_x1 = MultivariateNormal(torch.zeros(1), torch.tensor(self.a))
+            self.distrib_x1 = Normal(torch.zeros(1), torch.tensor(self.a))
 
-    def sample(self, n_samples):
-        x1 = self.distrib_x1.sample([n_samples])
-        rem = torch.randn([n_samples, self.dim - 1]) * (self.b * x1).exp()
-        return torch.cat([x1, rem], -1)
+        def sample(self, num_samples):
+            x1 = self.distrib_x1.sample([num_samples])
+
+            rem = torch.randn((num_samples,) + (self.dim - 1,)) * (self.b * x1).exp()
+
+            return torch.cat([x1, rem], -1)
 
