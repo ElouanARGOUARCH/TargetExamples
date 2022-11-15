@@ -114,3 +114,25 @@ class Funnel(DensityEstimationTarget):
 
             return torch.cat([x1, rem], -1)
 
+import numpy as np
+from matplotlib import image
+def rgb2gray(rgb):
+    return np.dot(rgb[..., :3], [0.2989, 0.5870, 0.1140])
+
+
+class Euler(DensityEstimationTarget):
+    def __init__(self):
+        self.rgb = image.imread("euler.jpg")
+        self.grey = torch.tensor(rgb2gray(self.rgb))
+        temp = self.grey.flatten()
+        self.vector_density = temp / torch.sum(temp)
+        self.lines, self.columns = self.grey.shape
+
+    def sample(self, num_samples):
+        self.cat = torch.distributions.Categorical(probs=self.vector_density)
+        categorical_samples = self.cat.sample([num_samples])
+        return torch.cat([((categorical_samples // self.columns + torch.rand(num_samples)) / self.lines).unsqueeze(-1),
+                                    ((categorical_samples % self.columns + torch.rand(num_samples)) / self.columns).unsqueeze(
+                                        -1)], dim=-1)
+
+
